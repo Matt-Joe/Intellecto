@@ -28,7 +28,6 @@ const stripBase = (p) => (p.startsWith(BASENAME) ? p.slice(BASENAME.length) || '
 // Wrapper for LandingPage to handle "Get Started" button navigation
 const LandingPageWrapper = () => {
   const navigate = useNavigate();
-  // Navigate to /capacitiprojectbase/auth (no more accidental root redirect)
   const handleGetStarted = () => navigate(`${BASENAME}/auth`);
   return <LandingPage onGetStarted={handleGetStarted} />;
 };
@@ -41,7 +40,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      const rawPath = location.pathname;      // e.g. "/capacitiprojectbase/auth"
+      const rawPath = location.pathname;      
       const path = stripBase(rawPath);        // e.g. "/auth"
 
       if (currentUser) {
@@ -178,7 +177,6 @@ const App = () => {
   );
 };
 
-// ✅ Router with basename — keeps the URL under /capacitiprojectbase/...
 const AppWrapper = () => (
   <Router basename={BASENAME}>
     <App />

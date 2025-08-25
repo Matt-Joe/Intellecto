@@ -10,8 +10,8 @@ const Header = ({ user, unreadCount, onProfileClick, onLogout, toggleNotificatio
     <header className="header">
       <div className="header-left">
         <Link to="/" className="logo-title-link">
-          <img src={logo} alt="CAPACITI logo" className="logo" />
-          <h1 className="title">Resource Hub</h1>
+          <img src={logo} alt="Intellecto logo" className="logo" />
+          <h1 className="title">Intellecto</h1>
         </Link>
       </div>
 

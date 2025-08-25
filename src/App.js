@@ -20,7 +20,7 @@ import { ref as dbRef, get } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 
 // 🔑 One source of truth for your subfolder
-const BASENAME = '/capacitiprojectbase';
+const BASENAME = '';
 
 // Small helper to strip the basename when comparing paths
 const stripBase = (p) => (p.startsWith(BASENAME) ? p.slice(BASENAME.length) || '/' : p);

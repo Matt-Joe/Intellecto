@@ -2,7 +2,7 @@
   "name": "capacitiprojectbase",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://lrjen.github.io/capacitiprojectbase/",
+  "homepage": "",
   "dependencies": {
     "chart.js": "^4.4.1",
     "firebase": "^11.3.1",

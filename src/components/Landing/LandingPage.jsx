@@ -18,12 +18,6 @@ const LandingPage = () => {
       <Navbar />
 
       <AboutSection />
-      <FeaturesSection />
-      <ShowcaseSection />
-      <TestimonialsSection />
-      <HowItWorksSection />
-      <CallToActionSection />
-
       <div className="landing-buttons">
         <button 
           onClick={() => navigate('/auth')} 
@@ -32,6 +26,11 @@ const LandingPage = () => {
           Get Started
         </button>
       </div>
+      <FeaturesSection />
+      <ShowcaseSection />
+      <TestimonialsSection />
+      <HowItWorksSection />
+      <CallToActionSection />
     </div>
   );
 };

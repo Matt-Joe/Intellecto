@@ -17,7 +17,7 @@
 .auth-toggle-buttons {
   display: flex;
   gap: 1.5vw;
-  margin-bottom: 2vh;
+  margin: 2vh;
 }
 
 .auth-toggle-buttons button {

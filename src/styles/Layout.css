@@ -81,6 +81,7 @@
   gap: 2rem; /* Even spacing between columns */
   flex-wrap: wrap; /* Wraps for small screens */
   border-top: var(--accent-color) 0.15rem solid;
+  z-index: 2;
 }
 
 /* Each section in the footer */

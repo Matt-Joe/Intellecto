@@ -1,10 +1,8 @@
-import useScrollFadeIn from '../../utils/useScrollFadeIn';
 
 const AboutSection = () => {
-  const fadeIn = useScrollFadeIn('up', 1, 0);
 
   return(
-  <section className="about-section" ref={fadeIn.ref} style={fadeIn.style}>
+  <section className="about-section">
     <h2>Intellecto</h2>
     <p>
       Intellecto is your all-in-one platform for interactive learning. 

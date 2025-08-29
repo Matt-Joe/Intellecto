@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../../assets/logo-light.png';
 import '../../styles/LandingPage.css'; // already loaded globally, but safe here
 
@@ -10,13 +10,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // When user scrolls more than 50px vertically, set scrolled to true
       setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
 
-    // Clean up the listener on unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -30,10 +28,10 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-links">
-        <a href="#features">Dashboard</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact Us</a>
-        <a href="#faq">FAQ</a>
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/about">About Us</Link>
+        <Link to="/contact">Contact Us</Link>
+        <Link to="/faq">FAQ</Link>
       </div>
 
       <div className="navbar-right">

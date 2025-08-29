@@ -4,31 +4,25 @@ import LandingPage from './components/Landing/LandingPage';
 import AuthForm from './components/Auth/AuthForm';
 import Dashboard from './components/User Dashboard/Dashboard';
 import AdminDashboard from './components/Admin Dashboard/AdminDashboard';
+import AboutUs from './components/About Us/AboutUs';
+import Contact from './components/Contact/ContactPage';
+import FAQ from './components/FAQ/FAQ';
 import Profile from './components/Profile';
-import Layout from '../src/components/Layout';
+import Layout from './components/Layout';
 
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { auth, db } from './firebase';
 import { ref as dbRef, get } from 'firebase/database';
 import { onAuthStateChanged } from 'firebase/auth';
 
-// 🔑 One source of truth for your subfolder
 const BASENAME = '';
 
-// Small helper to strip the basename when comparing paths
 const stripBase = (p) => (p.startsWith(BASENAME) ? p.slice(BASENAME.length) || '/' : p);
 
-// Wrapper for LandingPage to handle "Get Started" button navigation
 const LandingPageWrapper = () => {
   const navigate = useNavigate();
-  const handleGetStarted = () => navigate(`${BASENAME}/auth`);
+  const handleGetStarted = () => navigate('/auth');
   return <LandingPage onGetStarted={handleGetStarted} />;
 };
 
@@ -40,8 +34,8 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      const rawPath = location.pathname;      
-      const path = stripBase(rawPath);        // e.g. "/auth"
+      const rawPath = location.pathname;
+      const path = stripBase(rawPath);
 
       if (currentUser) {
         try {
@@ -58,10 +52,9 @@ const App = () => {
 
           setUser(userObj);
 
-          // If coming from /auth, push them to the correct dashboard
           if (path === '/auth') {
-            const target = userObj.role === 'admin' ? 'admin-dashboard' : 'dashboard';
-            navigate(`/${target}`, { replace: true });
+            const target = userObj.role === 'admin' ? '/admin-dashboard' : '/dashboard';
+            navigate(target, { replace: true });
           }
         } catch (err) {
           console.error('Error fetching user data:', err);
@@ -69,10 +62,9 @@ const App = () => {
         }
       } else {
         setUser(null);
-        // Only "/" and "/auth" are public
         const isPublic = path === '/' || path === '/auth';
         if (!isPublic) {
-          navigate(`${BASENAME}/`, { replace: true });
+          navigate('/', { replace: true });
         }
       }
 
@@ -90,89 +82,45 @@ const App = () => {
     try {
       await auth.signOut();
       setUser(null);
-      navigate(`${BASENAME}/`);
+      navigate('/');
     } catch (err) {
       console.error('Logout error:', err);
     }
   };
 
   const handleProfileClick = () => {
-    navigate(`${BASENAME}/profile`);
+    navigate('/profile');
   };
 
   return (
     <Routes>
-      {/* Index/Landing */}
-      <Route
-        path="/"
-        element={
-          <Layout user={memoizedUser}>
-            <LandingPageWrapper />
-          </Layout>
-        }
-      />
+      {/* Landing */}
+      <Route path="/" element={<Layout user={memoizedUser}><LandingPageWrapper /></Layout>} />
 
       {/* Auth */}
-      <Route
-        path="auth"
-        element={
-          <Layout user={memoizedUser}>
-            <AuthForm />
-          </Layout>
-        }
-      />
+      <Route path="/auth" element={<Layout user={memoizedUser}><AuthForm /></Layout>} />
 
-      {/* User Dashboard */}
-      <Route
-        path="dashboard"
-        element={
-          memoizedUser ? (
-            <Layout user={memoizedUser} handleLogout={handleLogout}>
-              <Dashboard user={memoizedUser} />
-            </Layout>
-          ) : (
-            <Layout>
-              <LandingPageWrapper />
-            </Layout>
-          )
-        }
-      />
+      {/* Dashboards */}
+      <Route path="/dashboard" element={
+        memoizedUser ? <Layout user={memoizedUser} handleLogout={handleLogout}><Dashboard user={memoizedUser} /></Layout>
+        : <Layout><LandingPageWrapper /></Layout>
+      } />
 
-      {/* Admin Dashboard */}
-      <Route
-        path="admin-dashboard"
-        element={
-          memoizedUser?.role === 'admin' ? (
-            <Layout user={memoizedUser} handleLogout={handleLogout}>
-              <AdminDashboard
-                user={memoizedUser}
-                handleLogout={handleLogout}
-                handleProfileClick={handleProfileClick}
-              />
-            </Layout>
-          ) : (
-            <Layout>
-              <LandingPageWrapper />
-            </Layout>
-          )
-        }
-      />
+      <Route path="/admin-dashboard" element={
+        memoizedUser?.role === 'admin' ? <Layout user={memoizedUser} handleLogout={handleLogout}><AdminDashboard user={memoizedUser} handleLogout={handleLogout} handleProfileClick={handleProfileClick} /></Layout>
+        : <Layout><LandingPageWrapper /></Layout>
+      } />
 
       {/* Profile */}
-      <Route
-        path="profile"
-        element={
-          memoizedUser ? (
-            <Layout user={memoizedUser} handleLogout={handleLogout}>
-              <Profile user={memoizedUser} />
-            </Layout>
-          ) : (
-            <Layout>
-              <LandingPageWrapper />
-            </Layout>
-          )
-        }
-      />
+      <Route path="/profile" element={
+        memoizedUser ? <Layout user={memoizedUser} handleLogout={handleLogout}><Profile user={memoizedUser} /></Layout>
+        : <Layout><LandingPageWrapper /></Layout>
+      } />
+
+      {/* Static Pages */}
+      <Route path="/about" element={<Layout user={memoizedUser}><AboutUs /></Layout>} />
+      <Route path="/contact" element={<Layout user={memoizedUser}><Contact /></Layout>} />
+      <Route path="/faq" element={<Layout user={memoizedUser}><FAQ /></Layout>} />
     </Routes>
   );
 };
